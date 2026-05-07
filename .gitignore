@@ -1,9 +1,9 @@
 # Ignore
 data/raw/
-data/processed
-data/splits
+data/processed/
+data/splits/
 
-outputs/
+outputs
 
 src/models/__pycache__
 src/data/__pycache__
