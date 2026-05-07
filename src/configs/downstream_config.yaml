@@ -1,0 +1,41 @@
+# configs/downstream_config.yaml
+# ─────────────────────────────────────────────
+# Step 4: Fine-tuning configuration
+# ─────────────────────────────────────────────
+
+paths:
+  pretrained_ckpt : outputs/checkpoints/best.pt
+  splits_dir      : data/splits
+  metadata_path   : data/processed/metadata.csv
+  ckpt_dir        : outputs/checkpoints
+  log_dir         : outputs
+
+data:
+  use_side    : true    # include zone / fert_recipe / age_of_crop
+  normalize_y : true    # standardize yield labels during training
+
+training:
+  total_epochs  : 40
+  freeze_epochs : 10    # Phase 1 (frozen encoder) duration
+  batch_size    : 128
+  num_workers   : 0
+  seed          : 42
+
+  # Learning rates
+  head_lr       : 1.0e-3   # regression head (both phases)
+  enc_lr        : 1.0e-5   # encoder only in Phase 2 (10x lower than head)
+  weight_decay  : 1.0e-4
+
+head:
+  hidden  : 64
+  dropout : 0.2
+
+# Side features (14 dims total)
+# zone        -> one-hot (3)   seedling / north / south
+# fert_recipe -> one-hot (10)  recipes 0-9
+# age_of_crop -> scaled  (1)   days 0-31 mapped to [0,1]
+side_features:
+  n_zone        : 3
+  n_fert_recipe : 10
+  n_age         : 1
+  total         : 14

@@ -1,0 +1,40 @@
+# configs/ssl_config.yaml
+# ─────────────────────────────────────────────
+# Step 2: SSL architecture configuration
+# ─────────────────────────────────────────────
+
+encoder:
+  n_features : 5       # climate features: temp, rh, par, co2, vpd
+  d_model    : 64      # hidden dimension — increase to 128 if you have a GPU
+  n_heads    : 4       # attention heads (must divide d_model)
+  n_layers   : 3       # transformer encoder layers
+  d_ff       : 128     # feedforward inner dim (usually 2× d_model)
+  dropout    : 0.1
+  max_len    : 24      # window length in timesteps
+  pool       : mean    # 'mean' pooling over timesteps
+
+heads:
+  proj_dim   : 32      # contrastive projection dimension
+  mask_ratio : 0.25    # fraction of timesteps masked per window (6/24)
+  n_gen_steps: 12      # generative head predicts T//2 future steps
+  gen_hidden : 64      # GRU hidden size in generative head
+
+loss:
+  w_contrast  : 1.0    # weight for NT-Xent contrastive loss
+  w_masked    : 1.0    # weight for masked prediction loss
+  w_gen       : 0.5    # weight for generative loss (easier task → lower weight)
+  temperature : 0.07   # NT-Xent temperature (lower = harder negatives)
+
+training:
+  epochs        : 50        # increase to 100 on GPU
+  batch_size    : 256       # increase to 512 on GPU
+  lr            : 3.0e-4
+  weight_decay  : 1.0e-4
+  warmup_epochs : 5         # linear LR ramp before cosine decay
+  num_workers   : 0         # set 4+ on Linux/GPU
+  seed          : 42
+
+paths:
+  splits_dir : data/splits
+  ckpt_dir   : outputs/checkpoints
+  log_dir    : outputs

@@ -1,0 +1,12 @@
+# Ignore
+data/raw/
+data/processed
+data/splits
+
+outputs/
+
+src/models/__pycache__
+src/data/__pycache__
+src/downstream/__pycache__
+src/ssl/__pycache__
+src/utils/__pycache__

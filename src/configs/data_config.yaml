@@ -1,0 +1,39 @@
+# configs/data_config.yaml
+# ─────────────────────────────────────────────
+# Step 1: Data preparation configuration
+# ─────────────────────────────────────────────
+
+data:
+  raw_path: "data/raw/crop_lifecycle_with_recipes_and_channels.csv"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+
+  climate_cols:
+    - climate_temperature
+    - climate_relative_humidity
+    - climate_par
+    - climate_co2
+    - climate_vpd
+
+  # Sliding window parameters
+  window_size: 24        # timesteps per window (24 hrs = 1 day)
+  stride: 12             # step between windows (50% overlap)
+
+  # Imputation
+  ffill_limit: 6         # max consecutive hours to forward-fill
+  bfill_limit: 6         # max consecutive hours to backward-fill
+
+  # Chronological split ratios (must sum to 1.0)
+  pretrain_ratio: 0.70
+  finetune_ratio: 0.15
+  test_ratio: 0.15
+
+  # Normalization
+  scaler: "robust"       # RobustScaler — resistant to outliers
+
+augmentation:
+  jitter_sigma: 0.03
+  time_mask_ratio: 0.15
+  scale_sigma: 0.10
+  n_permute_segments: 4
+  n_augmentations_per_sample: 2   # how many augmentations applied per view
