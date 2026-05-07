@@ -1,9 +1,11 @@
 # Ignore
-data/raw/
-data/processed/
-data/splits/
+data/raw
+data/processed
+data/splits
 
-outputs
+outputs/*
+!.gitkeep
+
 
 src/models/__pycache__
 src/data/__pycache__
